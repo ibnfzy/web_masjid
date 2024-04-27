@@ -22,17 +22,18 @@
         </thead>
         <tbody>
           <?php foreach ($data as $key => $item) : ?>
-            <tr>
-              <td><?= $key + 1 ?></td>
-              <td><?= $item['tanggal'] ?> </td>
-              <td><?= $item['keterangan'] ?> </td>
-              <td>Rp<?= number_format($item['nominal'], 0, ',', '.') ?> </td>
-              <td><?= $item['jenis'] ?></td>
-              <td>
-                <button class="btn btn-primary" onclick="edit('<?= $item['id'] ?>', '<?= $item['tanggal'] ?>', '<?= $item['keterangan'] ?>', '<?= $item['nominal'] ?>', '<?= $item['jenis'] ?>')">Edit</button>
-                <a href="/OperatorPanel/Infaq/Delete/<?= $item['id'] ?>" class="btn btn-danger">Hapus</a>
-              </td>
-            </tr>
+          <tr>
+            <td><?= $key + 1 ?></td>
+            <td><?= $item['tanggal'] ?> </td>
+            <td class="col-4"><?= $item['keterangan'] ?> </td>
+            <td>Rp<?= number_format($item['nominal'], 0, ',', '.') ?> </td>
+            <td><?= $item['jenis'] ?></td>
+            <td>
+              <button class="btn btn-primary"
+                onclick="edit('<?= $item['id'] ?>', '<?= $item['tanggal'] ?>', '<?= $item['keterangan'] ?>', '<?= $item['nominal'] ?>', '<?= $item['jenis'] ?>')">Edit</button>
+              <a href="/OperatorPanel/Infaq/Delete/<?= $item['id'] ?>" class="btn btn-danger">Hapus</a>
+            </td>
+          </tr>
           <?php endforeach ?>
         </tbody>
       </table>
@@ -67,8 +68,9 @@
           </div>
           <div class="mb-3">
             <label for="tanggal" class="form-label">
-              <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+              Tanggal
             </label>
+            <input type="date" class="form-control" id="tanggal" name="tanggal" required>
           </div>
         </div>
         <div class="modal-footer">
@@ -84,7 +86,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Data</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Data</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form action="/OperatorPanel/Infaq/Update" method="post" enctype="multipart/form-data">
@@ -107,8 +109,9 @@
           </div>
           <div class="mb-3">
             <label for="tanggal" class="form-label">
-              <input type="date" class="form-control" id="tanggal-edit" name="tanggal" required>
+              Tanggal
             </label>
+            <input type="date" class="form-control" id="tanggal-edit" name="tanggal" required>
           </div>
         </div>
         <div class="modal-footer">
@@ -125,18 +128,18 @@
 <?= $this->section('script'); ?>
 
 <script>
-  const edit = (id, tanggal, keterangan, nominal, jenis) => {
-    $('#id-edit').val(id)
-    $('#tanggal-edit').val(tanggal)
-    $('#keterangan-edit').val(keterangan)
-    $('#nominal-edit').val(nominal)
-    $('#jenis-edit option').each(function() {
-      if ($(this).val() == jenis) {
-        $(this).attr('selected', '');
-      }
-    });
-    $('#edit').modal('show')
-  };
+const edit = (id, tanggal, keterangan, nominal, jenis) => {
+  $('#id-edit').val(id)
+  $('#tanggal-edit').val(tanggal)
+  $('#keterangan-edit').val(keterangan)
+  $('#nominal-edit').val(nominal)
+  $('#jenis-edit option').each(function() {
+    if ($(this).val() == jenis) {
+      $(this).attr('selected', '');
+    }
+  });
+  $('#edit').modal('show')
+};
 </script>
 
 <?= $this->endSection(); ?>

@@ -24,8 +24,9 @@ class OperatorAuth implements FilterInterface
      * @return RequestInterface|ResponseInterface|string|void
      */
     public function before(RequestInterface $request, $arguments = null)
-    {
-        if (!session()->get('operator_logged_in')) {
+    {;
+        if (!session()->get('operator_logged_in') && !str_contains($request->getUri()->getPath(), 'OperatorPanel/Laporan/')) {
+
             return redirect()->to(base_url('Login/Operator'))->with('type-status', 'info')
                 ->with('message', 'Silahkan login terlebih dahulu');
         }

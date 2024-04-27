@@ -107,7 +107,7 @@ class Filters extends BaseFilters
      */
     public array $filters = [
         'ops' => [
-            'before' => ['OperatorPanel', 'OperatorPanelw/*']
+            'before' => ['OperatorPanel', 'OperatorPanel/*']
         ]
     ];
 }

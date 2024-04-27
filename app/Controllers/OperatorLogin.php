@@ -33,7 +33,7 @@ class OperatorLogin extends BaseController
                 session()->set([
                     'id' => $check['id'],
                     'email' => $check['email'],
-                    'operator_logged_in' => true
+                    'operator_logged_in' => true,
                 ]);
 
                 return redirect()->to(base_url('OperatorPanel'))->with('type-status', 'info')

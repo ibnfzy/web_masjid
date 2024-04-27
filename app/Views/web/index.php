@@ -2,6 +2,16 @@
 
 <?= $this->section('content'); ?>
 
+<?php
+$db = db_connect();
+$getDataMasjid = $db->table('masjid')->get()->getRowArray();
+$kontak = $getDataMasjid['kontak'];
+$formattedKontak = preg_replace('/[^0-9]/', '', $kontak);
+if (substr($formattedKontak, 0, 2) != '62') {
+  $formattedKontak = '62' . $formattedKontak;
+}
+?>
+
 <!-- Corousel -->
 <div class="owl-carousel owl-theme container-fluid mb-lg-5" id="carousel1">
   <?php foreach ($corousel as $item) : ?>
@@ -20,7 +30,7 @@
         <i class="fa-solid fa-mosque fs-1 text-success"></i>
         <div class="vstack align-items-start">
           <div style="font-weight: bold; font-size: large;">MASJID AL ITTIHAD</div>
-          <div style="font-weight: lighter; font-size: large;">Jl. Toddopuli 7</div>
+          <div style="font-weight: lighter; font-size: large;"><?= $getDataMasjid['alamat']; ?></div>
         </div>
       </div>
       <div class="col informasi owl-carousel owl-theme" id="carouselx2" style="width: 30px;">
@@ -46,7 +56,7 @@
         <i class="fa-solid fa-phone fs-1"></i>
         <div class="vstack align-items-start">
           <div style="font-weight: bold; font-size: large;">Pusat Info Masjid</div>
-          <div style="font-weight: lighter; font-size: large;">+62 819-1188-4342</div>
+          <div style="font-weight: lighter; font-size: large;"><?= $getDataMasjid['kontak']; ?></div>
         </div>
       </div>
     </div>
@@ -58,7 +68,7 @@
     </div>
     <div class="row m-2">
       <div class="col-8">
-        <table class="table">
+        <table class="table" id="datatables">
           <thead>
             <tr>
               <th class="text-success">JUMLAH</th>
@@ -85,41 +95,26 @@
         <hr>
         <div class="card bg-success p-2">
           <div class="owl-carousel owl-theme" id="carousel3">
+            <?php foreach ($rekening as $item) : ?>
             <div class="item hstack gap-3">
               <img src="<?= base_url('MASJID.png') ?>" alt="" style="width: auto; height: 50px;">
               <div class="vstack align-items-start">
-                <div style="font-weight: bold; font-size: large; color:white;">BRI</div>
-                <div style="font-weight: lighter; font-size: large; text-decoration:none; color: white;">1234567890
-                  A/N TEST
+                <div style="font-weight: bold; font-size: large; color:white;"><?= $item['nama_bank']; ?>
+                  (<?= $item['kode_bank']; ?>) </div>
+                <div style="font-weight: lighter; font-size: large; text-decoration:none; color: white;">
+                  <?= $item['nomor_rekening']; ?>
+                  Atas Nama <?= $item['atas_nama']; ?>
                 </div>
               </div>
             </div>
-
-            <div class="item hstack gap-3">
-              <img src="<?= base_url('MASJID.png') ?>" alt="" style="width: auto; height: 50px;">
-              <div class="vstack align-items-start">
-                <div style="font-weight: bold; font-size: large; color:white;">BRI</div>
-                <div style="font-weight: lighter; font-size: large; text-decoration:none; color: white;">1234567890
-                  A/N TEST
-                </div>
-              </div>
-            </div>
-
-            <div class="item hstack gap-3">
-              <img src="<?= base_url('MASJID.png') ?>" alt="" style="width: auto; height: 50px;">
-              <div class="vstack align-items-start">
-                <div style="font-weight: bold; font-size: large; color:white;">BRI</div>
-                <div style="font-weight: lighter; font-size: large; text-decoration:none; color: white;">1234567890
-                  A/N TEST
-                </div>
-              </div>
-            </div>
+            <?php endforeach ?>
 
           </div>
         </div>
         <br>
-        <a href="#" class="btn btn-outline-success col-6 rounded-0" style="align-self: self-end;"
-          title="Laporan belum tersedia">Lihat Laporan</a>
+        <a href="https://wa.me/<?= $formattedKontak; ?>" class="btn btn-success col-8 rounded-0"
+          style="align-self: self-end;" target="_blank">Hubungi Pengurus Masjid
+          (Whatsapp)</a>
 
       </div>
     </div>

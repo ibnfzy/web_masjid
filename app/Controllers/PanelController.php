@@ -616,7 +616,7 @@ class PanelController extends BaseController
     public function keuangan($type = 'pemasukan')
     {
         return view('panel/infaq', [
-            'data' => $this->db->table('keuangan')->where('jenis', lcfirst($type))->get()->getResultArray()
+            'data' => $this->db->table('keuangan')->where('jenis', lcfirst($type))->orderBy('tanggal', 'DESC')->get()->getResultArray()
         ]);
     }
 
@@ -624,10 +624,10 @@ class PanelController extends BaseController
     {
         $rules = [
             'keterangan' => [
-                'rules' => 'required|max_lenght[255]',
+                'rules' => 'required|max_length[255]',
                 'errors' => [
                     'required' => 'Keterangan tidak boleh kosong',
-                    'max_lenght' => 'Keterangan tidak boleh lebih dari 255 karakter'
+                    'max_length' => 'Keterangan tidak boleh lebih dari 255 karakter'
                 ]
             ],
             'nominal' => [
@@ -674,10 +674,10 @@ class PanelController extends BaseController
                 ]
             ],
             'keterangan' => [
-                'rules' => 'required|max_lenght[255]',
+                'rules' => 'required|max_length[255]',
                 'errors' => [
                     'required' => 'Keterangan tidak boleh kosong',
-                    'max_lenght' => 'Keterangan tidak boleh lebih dari 255 karakter'
+                    'max_length' => 'Keterangan tidak boleh lebih dari 255 karakter'
                 ]
             ],
             'jenis' => [
@@ -752,5 +752,222 @@ class PanelController extends BaseController
         $this->db->table('corousel')->where('id', $id)->delete();
         return redirect()->to(base_url('OperatorPanel/Corousel'))->with('type-status', 'success')
             ->with('message', 'Data berhasil dihapus');
+    }
+
+    public function rekening_masjid()
+    {
+        return view('panel/rekening', [
+            'data' => $this->db->table('rekening_masjid')->get()->getResultArray()
+        ]);
+    }
+
+    public function rekening_insert()
+    {
+        $rules = [
+            'nama_bank' => [
+                'rules' => 'required|max_length[100]',
+                'errors' => [
+                    'required' => 'Nama tidak boleh kosong',
+                    'max_length' => 'Nama tidak boleh lebih dari 100 karakter'
+                ]
+            ],
+            'kode_bank' => [
+                'rules' => 'required|max_length[10]',
+                'errors' => [
+                    'required' => 'Kode Bank tidak boleh kosong',
+                    'max_length' => 'Kode Bank tidak boleh lebih dari 10 karakter'
+                ]
+            ],
+            'nomor_rekening' => [
+                'rules' => 'required|max_length[50]',
+                'errors' => [
+                    'required' => 'Nomor Rekening tidak boleh kosong',
+                    'max_length' => 'Nomor Rekening tidak boleh lebih dari 50 karakter'
+                ]
+            ],
+            'atas_nama' => [
+                'rules' => 'required|max_length[100]',
+                'errors' => [
+                    'required' => 'Atas Nama tidak boleh kosong',
+                    'max_length' => 'Atas Nama tidak boleh lebih dari 100 karakter'
+                ]
+            ]
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->to(base_url('OperatorPanel/RekeningMasjid'))->with('type-status', 'error')->with('dataMessage', $this->validator->getErrors());
+        }
+
+        $this->db->table('rekening_masjid')->insert([
+            'nama_bank' => $this->request->getPost('nama_bank'),
+            'kode_bank' => $this->request->getPost('kode_bank'),
+            'nomor_rekening' => $this->request->getPost('nomor_rekening'),
+            'atas_nama' => $this->request->getPost('atas_nama')
+        ]);
+
+        return redirect()->to(base_url('OperatorPanel/RekeningMasjid'))->with('type-status', 'success')
+            ->with('message', 'Data berhasil ditambahkan');
+    }
+
+    public function rekening_update()
+    {
+        $rules = [
+            'id' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'ID tidak boleh kosong'
+                ]
+            ],
+            'nama_bank' => [
+                'rules' => 'required|max_length[100]',
+                'errors' => [
+                    'required' => 'Nama tidak boleh kosong',
+                    'max_length' => 'Nama tidak boleh lebih dari 100 karakter'
+                ]
+            ],
+            'kode_bank' => [
+                'rules' => 'required|max_length[10]',
+                'errors' => [
+                    'required' => 'Kode Bank tidak boleh kosong',
+                    'max_length' => 'Kode Bank tidak boleh lebih dari 10 karakter'
+                ]
+            ],
+            'nomor_rekening' => [
+                'rules' => 'required|max_length[50]',
+                'errors' => [
+                    'required' => 'Nomor Rekening tidak boleh kosong',
+                    'max_length' => 'Nomor Rekening tidak boleh lebih dari 50 karakter'
+                ]
+            ],
+            'atas_nama' => [
+                'rules' => 'required|max_length[100]',
+                'errors' => [
+                    'required' => 'Atas Nama tidak boleh kosong',
+                    'max_length' => 'Atas Nama tidak boleh lebih dari 100 karakter'
+                ]
+            ]
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->to(base_url('OperatorPanel/RekeningMasjid'))->with('type-status', 'error')->with('dataMessage', $this->validator->getErrors());
+        }
+
+        $this->db->table('rekening_masjid')->where('id', $this->request->getPost('id'))->update([
+            'nama_bank' => $this->request->getPost('nama_bank'),
+            'kode_bank' => $this->request->getPost('kode_bank'),
+            'nomor_rekening' => $this->request->getPost('nomor_rekening'),
+            'atas_nama' => $this->request->getPost('atas_nama')
+        ]);
+
+        return redirect()->to(base_url('OperatorPanel/RekeningMasjid'))->with('type-status', 'success')
+            ->with('message', 'Data berhasil diupdate');
+    }
+
+    public function rekening_delete($id)
+    {
+        $this->db->table('rekening_masjid')->where('id', $id)->delete();
+        return redirect()->to(base_url('OperatorPanel/RekeningMasjid'))->with('type-status', 'success')
+            ->with('message', 'Data berhasil dihapus');
+    }
+
+    public function laporan()
+    {
+        return view('panel/laporan', [
+            'data' => $this->db->table('laporan')->orderBy('month', 'DESC')->get()->getResultArray(),
+        ]);
+    }
+
+    public function laporan_proses()
+    {
+        $rules = [
+            'tanggal' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Kolom Bulan tidak boleh kosong'
+                ]
+            ],
+            'action' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Wajib memilih aksi'
+                ]
+            ]
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->to(base_url('OperatorPanel/Laporan'))->with('type-status', 'error')->with('dataMessage', $this->validator->getErrors());
+        }
+
+        if ($this->request->getPost('action') == 'save' || $this->request->getPost('action') == 'both') {
+
+            $this->db->table('laporan')->insert([
+                'month' => $this->request->getPost('tanggal')
+            ]);
+        }
+
+        if ($this->request->getPost('action') == 'download' || $this->request->getPost('action') == 'both') {
+            return redirect()->to(base_url('OperatorPanel/Laporan/' . $this->request->getPost('tanggal')));
+        }
+
+        return redirect()->to(base_url('OperatorPanel/Laporan'))->with('type-status', 'success')->with('message', 'Berhasil menyimpan');
+    }
+
+    public function laporan_detail($month)
+    {
+        return view('panel/render_laporan', [
+            'data' => $this->db->table('keuangan')->like('tanggal', $month, 'after')->get()->getResultArray()
+        ]);
+    }
+
+    public function laporan_delete($id)
+    {
+        $this->db->table('laporan')->where('id', $id)->delete();
+        return redirect()->to(base_url('OperatorPanel/Laporan'))->with('type-status', 'success')
+            ->with('message', 'Data berhasil dihapus');
+    }
+
+    public function settings_save()
+    {
+        $rules = [
+            'alamat' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Alamat tidak boleh kosong',
+                ]
+            ],
+            'kontak' => [
+                'rules' => 'required|max_length[20]',
+                'errors' => [
+                    'required' => 'Kontak tidak boleh kosong',
+                    'max_length' => 'Kontak tidak boleh lebih dari 20 karakter'
+                ]
+            ],
+            'email' => [
+                'rules' => 'required|valid_email',
+                'errors' => [
+                    'required' => 'Email tidak boleh kosong',
+                    'valid_email' => 'Email tidak valid'
+                ]
+            ],
+            'trailling_text' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Trailling Text tidak boleh kosong',
+                ]
+            ]
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->to(base_url('OperatorPanel'))->with('type-status', 'error')->with('dataMessage', $this->validator->getErrors());
+        }
+
+        $this->db->table('settings')->where('id', 1)->update([
+            'alamat' => $this->request->getPost('alamat'),
+            'kontak' => $this->request->getPost('kontak'),
+            'email' => $this->request->getPost('email'),
+            'trailling_text' => $this->request->getPost('trailling_text'),
+        ]);
+
+        return redirect()->to(base_url('OperatorPanel'))->with('type-status', 'success')->with('message', 'Berhasil menyimpan');
     }
 }

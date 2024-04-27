@@ -12,5 +12,7 @@ class Seed extends Seeder
         $this->call('Blog');
         $this->call('Keuangan');
         $this->call('Corousel');
+        $this->call('RekeningMasjid');
+        $this->call('Masjid');
     }
 }

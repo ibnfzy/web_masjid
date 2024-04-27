@@ -35,7 +35,6 @@ $routes->group('OperatorPanel', function (RouteCollection $routes) {
   $routes->post('Jabatan/Update', 'PanelController::jabatan_update');
   $routes->get('Jabatan/Delete/(:segment)', 'PanelController::jabatan_delete/$1');
 
-
   $routes->get('Layanan', 'PanelController::layanan');
   $routes->post('Layanan', 'PanelController::layanan_insert');
   $routes->post('Layanan/Update', 'PanelController::layanan_update');
@@ -66,4 +65,14 @@ $routes->group('OperatorPanel', function (RouteCollection $routes) {
   $routes->get('Corousel', 'PanelController::corousel');
   $routes->post('Corousel', 'PanelController::corousel_insert');
   $routes->get('Corousel/Delete/(:segment)', 'PanelController::corousel_delete/$1');
+
+  $routes->get('RekeningMasjid', 'PanelController::rekening_masjid');
+  $routes->post('RekeningMasjid', 'PanelController::rekening_insert');
+  $routes->post('RekeningMasjid/Update', 'PanelController::rekening_update');
+  $routes->get('RekeningMasjid/Delete/(:segment)', 'PanelController::rekening_delete/$1');
+
+  $routes->get('Laporan', 'PanelController::laporan');
+  $routes->get('Laporan/(:segment)', 'PanelController::laporan_detail/$1');
+  $routes->get('Laporan/Delete/(:segment)', 'PanelController::laporan_delete/$1');
+  $routes->post('Laporan', 'PanelController::laporan_proses');
 });

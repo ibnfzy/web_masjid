@@ -36,16 +36,18 @@
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Laporan Agenda <span class="badge bg-danger">Belum Tersedia</span>
+              Laporan Keuangan
             </a>
-            <!-- <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul> -->
+            <ul class="dropdown-menu">
+              <?php
+              $db = db_connect();
+              $laporan = $db->table('laporan')->get()->getResultArray();
+              ?>
+              <?php foreach ($laporan as $item) : ?>
+              <li><a class="dropdown-item" href="/OperatorPanel/Laporan/<?= $item['month']; ?>"
+                  target="_blank"><?= $item['month']; ?></a></li>
+              <?php endforeach; ?>
+            </ul>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/Agenda">Agenda</a>

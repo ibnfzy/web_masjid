@@ -66,48 +66,55 @@ class Home extends BaseController
             'corousel' => $this->db->table('corousel')->get()->getResultArray(),
             'infaq' => $this->db->table('keuangan')->where('jenis', 'pemasukan')->orderBy('id', 'DESC')->get(5)->getResultArray(),
             'total' => $pemasukan - $pengeluaran,
+            'rekening' => $this->db->table('rekening_masjid')->get()->getResultArray()
         ]);
     }
 
-    public function blog_detail()
+    public function blog_detail($category, $id)
     {
         return view('web/blog-detail', [
-            'title' => 'Blog Detail'
+            'title' => 'Blog Detail',
+            'data' => $this->db->table('blog')->where('category', $category)->where('id', $id)->get()->getRowArray()
         ]);
     }
 
     public function lembaga(): string
     {
         return view('web/blog-list', [
-            'title' => 'Lembaga'
+            'title' => 'Lembaga',
+            'data' => $this->db->table('blog')->where('category', 'lembaga')->orderBy('id', 'DESC')->get()->getResultArray()
         ]);
     }
 
     public function layanan()
     {
         return view('web/blog-list', [
-            'title' => 'Layanan'
+            'title' => 'Layanan',
+            'data' => $this->db->table('blog')->where('category', 'layanan')->orderBy('id', 'DESC')->get()->getResultArray()
         ]);
     }
 
     public function inventaris()
     {
         return view('web/blog-list', [
-            'title' => 'Inventaris'
+            'title' => 'Inventaris',
+            'data' => $this->db->table('blog')->where('category', 'inventaris')->orderBy('id', 'DESC')->get()->getResultArray()
         ]);
     }
 
     public function tausiyah()
     {
         return view('web/blog-list', [
-            'title' => 'Tausiyah'
+            'title' => 'Tausiyah',
+            'data' => $this->db->table('blog')->where('category', 'tausiyah')->orderBy('id', 'DESC')->get()->getResultArray()
         ]);
     }
 
     public function agenda()
     {
         return view('web/blog-list', [
-            'title' => 'Agenda'
+            'title' => 'Agenda',
+            'data' => $this->db->table('blog')->where('category', 'agenda')->orderBy('id', 'DESC')->get()->getResultArray()
         ]);
     }
 }
